@@ -3,15 +3,15 @@ import {
   authorizeCron,
   checkBusinessHours,
   respondUnauthorized,
-} from '../../lib/customer-support/cron-auth.js';
-import { runResponder } from '../../lib/customer-support/respond.js';
+} from '../lib/customer-support/cron-auth.js';
+import { runClassifier } from '../lib/customer-support/classify.js';
+
+export const config = {
+  maxDuration: 60,
+};
 
 /**
- * Vercel Cron: process PENDING_ACTION queue (Stripe cancel + Resend + Gmail labels).
- * Schedule: 15 min past each hour (after classify cron).
- *
- * Required env: CRON_SECRET, STRIPE_SECRET_KEY, RESEND_API_KEY, BLOB_READ_WRITE_TOKEN
- * Optional: IMAP_* (Gmail label updates after respond)
+ * Vercel Cron: classify info@ emails (IMAP + Gemini + Stripe + Gmail labels).
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!authorizeCron(req)) {
@@ -23,11 +23,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const result = await runResponder();
+    const result = await runClassifier();
     return res.status(200).json({ ok: true, ...result });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error('[customer-support-respond]', message);
+    console.error('[customer-support-classify]', message);
     return res.status(500).json({ ok: false, error: message });
   }
 }

@@ -6,8 +6,8 @@ Automatización completa en este repositorio (**wisdompackets_customer**). No re
 
 | Endpoint | Schedule (UTC) | Función |
 |----------|----------------|---------|
-| `/api/cron/customer-support-classify` | `0 * * * *` | IMAP → Gemini → Stripe → Gmail labels → cola Blob |
-| `/api/cron/customer-support-respond` | `15 * * * *` | Cola `PENDING_ACTION` → Stripe cancel → Resend → Gmail labels |
+| `/api/customer-support-classify` | `0 * * * *` | IMAP → Gemini → Stripe → Gmail labels → cola Blob |
+| `/api/customer-support-respond` | `15 * * * *` | Cola `PENDING_ACTION` → Stripe cancel → Resend → Gmail labels |
 
 Ambos solo ejecutan entre **09:00–20:59** (`America/Denver`).
 
@@ -43,10 +43,10 @@ Ver [GMAIL_LABELS.md](./GMAIL_LABELS.md).
 
 ```bash
 curl -H "Authorization: Bearer $CRON_SECRET" \
-  https://<tu-dominio>/api/cron/customer-support-classify
+  https://<tu-dominio>/api/customer-support-classify
 
 curl -H "Authorization: Bearer $CRON_SECRET" \
-  https://<tu-dominio>/api/cron/customer-support-respond
+  https://<tu-dominio>/api/customer-support-respond
 ```
 
 ## Local (solo desarrollo)

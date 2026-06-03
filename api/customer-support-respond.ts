@@ -3,14 +3,15 @@ import {
   authorizeCron,
   checkBusinessHours,
   respondUnauthorized,
-} from '../../lib/customer-support/cron-auth.js';
-import { runClassifier } from '../../lib/customer-support/classify.js';
+} from '../lib/customer-support/cron-auth.js';
+import { runResponder } from '../lib/customer-support/respond.js';
+
+export const config = {
+  maxDuration: 60,
+};
 
 /**
- * Vercel Cron: classify info@ emails (IMAP + Gemini + Stripe + Gmail labels).
- * Schedule: hourly. Runs only 09:00–20:59 America/Denver.
- *
- * Required: CRON_SECRET, GEMINI_API_KEY, IMAP_*, STRIPE_SECRET_KEY, BLOB_READ_WRITE_TOKEN
+ * Vercel Cron: process PENDING_ACTION queue (Stripe + Resend + Gmail labels).
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!authorizeCron(req)) {
@@ -22,11 +23,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const result = await runClassifier();
+    const result = await runResponder();
     return res.status(200).json({ ok: true, ...result });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error('[customer-support-classify]', message);
+    console.error('[customer-support-respond]', message);
     return res.status(500).json({ ok: false, error: message });
   }
 }

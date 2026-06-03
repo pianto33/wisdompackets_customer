@@ -23,8 +23,8 @@ Todo el flujo corre en **wisdompackets_customer** (este repo) sin crontab local:
 
 | Cron | Ruta | Qué hace |
 |------|------|----------|
-| :00 | `/api/cron/customer-support-classify` | Clasifica mails a info@ **sin** label `WP/Clasificado`, taguea en Gmail, encola en Blob |
-| :15 | `/api/cron/customer-support-respond` | Cancela en Stripe, responde por Resend, actualiza labels |
+| :00 | `/api/customer-support-classify` | Clasifica mails a info@ **sin** label `WP/Clasificado`, taguea en Gmail, encola en Blob |
+| :15 | `/api/customer-support-respond` | Cancela en Stripe, responde por Resend, actualiza labels |
 
 Documentación: [`CUSTOMER_SUPPORT_CRON.md`](CUSTOMER_SUPPORT_CRON.md)  
 Labels Gmail: [`GMAIL_LABELS.md`](GMAIL_LABELS.md)
