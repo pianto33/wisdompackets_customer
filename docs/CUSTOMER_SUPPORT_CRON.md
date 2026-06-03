@@ -57,14 +57,30 @@ npm run betterstack-ping
 
 En Vercel: agregar las mismas variables en **Environment Variables** del proyecto.
 
+## Ver logs en Vercel
+
+1. [vercel.com](https://vercel.com) → proyecto **wisdompackets-customer**
+2. **Logs** (tab superior) o **Deployments** → último deploy → **Functions**
+3. Filtrar por `/api/customer-support-classify` o `/api/health`
+
+Cada invocación ahora escribe `[customer-support-cron] classify invoked` con el estado de env vars (`hasBlob`, `betterStack`, etc.), **también si está fuera de horario**.
+
+## Horario del cron
+
+Solo procesa IMAP/Stripe entre **09:00–21:00 hora Denver** (`America/Denver`).  
+Fuera de esa ventana responde `skipped: outside_business_hours` pero **sí genera logs**.
+
 ## Prueba manual
 
 ```bash
-curl -H "Authorization: Bearer $CRON_SECRET" \
-  https://<tu-dominio>/api/customer-support-classify
+# Siempre genera log (sin auth)
+curl https://wisdompackets-customer.vercel.app/api/health
 
 curl -H "Authorization: Bearer $CRON_SECRET" \
-  https://<tu-dominio>/api/customer-support-respond
+  https://wisdompackets-customer.vercel.app/api/customer-support-classify
+
+curl -H "Authorization: Bearer $CRON_SECRET" \
+  https://wisdompackets-customer.vercel.app/api/customer-support-respond
 ```
 
 ## Local (solo desarrollo)
