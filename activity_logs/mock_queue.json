@@ -1,0 +1,58 @@
+[
+  {
+    "id": "mock_msg_101",
+    "receivedAt": "2026-05-27T20:16:40.346Z",
+    "fromEmail": "rodrigo.test.found@example.com",
+    "subject": "Hola, solicito dar de baja mi suscripcion por favor",
+    "bodySnippet": "Hola equipo de WisdomPackets. No tengo tiempo para leer los libros ultimamente asi que me gustaria dar de baja mi suscripcion mensual premium. Saludos",
+    "classification": "Desuscripción",
+    "stripeTag": "Found",
+    "stripeCustomerId": "cus_R0dr1g0_P1ant0",
+    "stripeSubscriptionId": "sub_active_premium_123",
+    "status": "PROCESSED_SUCCESS",
+    "processedAt": "2026-05-27T20:16:40.374Z",
+    "errorDetails": null
+  },
+  {
+    "id": "mock_msg_102",
+    "receivedAt": "2026-05-27T20:16:40.349Z",
+    "fromEmail": "maria.test.refund@example.com",
+    "subject": "Quiero cancelar y reembolso de mi pago",
+    "bodySnippet": "Hola. Ayer se me cobro la suscripcion automatica pero yo queria cancelarla antes. Por favor cancelen mi cuenta y hagan la devolucion de mi dinero a la",
+    "classification": "Desuscripción + Refund",
+    "stripeTag": "Found",
+    "stripeCustomerId": "cus_Mar1a_Refund_999",
+    "stripeSubscriptionId": "sub_active_premium_456",
+    "status": "PROCESSED_SUCCESS",
+    "processedAt": "2026-05-27T20:16:40.374Z",
+    "errorDetails": null
+  },
+  {
+    "id": "mock_msg_103",
+    "receivedAt": "2026-05-27T20:16:40.349Z",
+    "fromEmail": "juan.test.notfound@example.com",
+    "subject": "solicitud de baja de cuenta",
+    "bodySnippet": "Quiero cancelar mi cuenta premium, gracias.",
+    "classification": "Desuscripción",
+    "stripeTag": "Not-Found",
+    "stripeCustomerId": null,
+    "stripeSubscriptionId": null,
+    "status": "PROCESSED_NOT_FOUND",
+    "processedAt": "2026-05-27T20:16:40.374Z",
+    "errorDetails": null
+  },
+  {
+    "id": "mock_msg_104",
+    "receivedAt": "2026-05-27T20:16:40.349Z",
+    "fromEmail": "sofia.info@example.com",
+    "subject": "¿Tienen el libro Hábitos Atómicos?",
+    "bodySnippet": "Hola! Estaba viendo su catálogo y quería saber si tienen el resumen del libro Hábitos Atómicos en español y si viene con audiolibro. Quedo atenta, gra",
+    "classification": "Otros",
+    "stripeTag": "Not-Found",
+    "stripeCustomerId": null,
+    "stripeSubscriptionId": null,
+    "status": "IGNORED",
+    "processedAt": null,
+    "errorDetails": null
+  }
+]

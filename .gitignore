@@ -1,0 +1,14 @@
+node_modules/
+.env
+.vercel/
+
+# Logs y cola local (pueden contener datos de clientes)
+activity_logs/queue.json
+activity_logs/runs.json
+activity_logs/*.log
+
+# Mantener ejemplos de simulación
+!activity_logs/mock_queue.json
+!activity_logs/mock_runs.json
+
+.DS_Store
