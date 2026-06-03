@@ -1,4 +1,7 @@
+import { enableBetterStackConsoleMirror } from '../lib/customer-support/betterstack.js';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+enableBetterStackConsoleMirror();
 import {
   authorizeCron,
   checkBusinessHours,

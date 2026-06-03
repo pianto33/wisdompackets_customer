@@ -23,6 +23,8 @@ Ambos solo ejecutan entre **09:00–20:59** (`America/Denver`).
 | `RESEND_API_KEY` | | ✓ |
 | `RESEND_FROM_EMAIL` | | ✓ |
 | `ALERT_EMAIL_RECIPIENT` | | ✓ |
+| `BETTERSTACK_SOURCE_TOKEN` | ✓ | ✓ |
+| `BETTERSTACK_INGESTING_HOST` | ✓ | ✓ |
 
 `BLOB_READ_WRITE_TOKEN` es **obligatorio** en producción (cola `customer-support/queue.json` en Vercel Blob).
 
@@ -38,6 +40,22 @@ Tras el deploy, en Vercel → Settings → Cron Jobs deben aparecer los dos path
 ## Labels Gmail
 
 Ver [GMAIL_LABELS.md](./GMAIL_LABELS.md).
+
+## Better Stack (logs)
+
+Source: **wisdom-packets-customer**
+
+- Cada `console.log` / `warn` / `error` del clasificador y respondedor se replica a Better Stack.
+- Cada `logRun()` envía un evento estructurado: `customer_support.IMAP_SYNC.SUCCESS`, etc.
+
+Prueba local:
+
+```bash
+# En .env: BETTERSTACK_SOURCE_TOKEN y BETTERSTACK_INGESTING_HOST
+npm run betterstack-ping
+```
+
+En Vercel: agregar las mismas variables en **Environment Variables** del proyecto.
 
 ## Prueba manual
 

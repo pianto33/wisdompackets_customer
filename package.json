@@ -9,6 +9,7 @@
     "respond": "node scripts/respond_emails.js",
     "test-simulator": "node scripts/test_simulator.js",
     "typecheck": "tsc --noEmit",
+    "betterstack-ping": "node scripts/betterstack-ping.js",
     "deploy": "vercel --prod"
   },
   "dependencies": {
