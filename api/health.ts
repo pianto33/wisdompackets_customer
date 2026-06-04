@@ -2,6 +2,7 @@ import { enableBetterStackConsoleMirror } from '../lib/customer-support/betterst
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { isWithinNewMexicoBusinessHours } from '../lib/customer-support/classify.js';
 import { betterStack } from '../lib/customer-support/betterstack.js';
+import { getQueueStorageMode } from '../lib/customer-support/queue-store.js';
 
 enableBetterStackConsoleMirror();
 
@@ -18,13 +19,17 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     }).format(new Date())
   );
 
+  const queueStorage = getQueueStorageMode();
+  const configOk = queueStorage === 'vercel-blob' || queueStorage === 'local-filesystem';
+
   const status = {
-    ok: true,
+    ok: configOk,
     app: 'wisdompackets-customer',
     timestamp: new Date().toISOString(),
     vercelEnv: process.env.VERCEL_ENV || null,
     denverHour,
     inBusinessHours: isWithinNewMexicoBusinessHours(),
+    queueStorage,
     config: {
       betterStack: betterStack.isEnabled(),
       blob: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
@@ -37,5 +42,5 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
   };
 
   console.log('[customer-support] health', status);
-  return res.status(200).json(status);
+  return res.status(configOk ? 200 : 503).json(status);
 }

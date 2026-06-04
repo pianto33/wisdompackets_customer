@@ -28,6 +28,10 @@ Ambos solo ejecutan entre **09:00–20:59** (`America/Denver`).
 
 `BLOB_READ_WRITE_TOKEN` es **obligatorio** en producción (cola `customer-support/queue.json` en Vercel Blob).
 
+Sin este token verás `EROFS: read-only file system` en Better Stack — el cron no puede guardar la cola.
+
+Crear token: Vercel → Storage → Blob → copiar `BLOB_READ_WRITE_TOKEN` al proyecto **wisdompackets-customer** → Redeploy.
+
 ## Deploy
 
 ```bash

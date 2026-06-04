@@ -25,8 +25,9 @@ to:info@wisdompackets.com -label:"WP/Clasificado"
 | `WP/Respondido-Auto` | Respond | Cancelación + email automático OK |
 | `WP/Respondido-SinCuenta` | Respond | Email “no encontramos suscripción” |
 | `WP/Error` | Respond | Falló Stripe/Resend; revisar alerta |
+| `WP/Archivado` | Clasificador | Mail procesado desde INBOX (opcional) |
 
-Carpeta Gmail (no es label de clasificación): **WisdomPackets Support** — archivo visual tras procesar desde INBOX.
+La carpeta **WisdomPackets Support** ya no se usa por IMAP (fallaba en serverless); la organización es solo con labels `WP/*`.
 
 ## Estados en cola JSON (Blob)
 
