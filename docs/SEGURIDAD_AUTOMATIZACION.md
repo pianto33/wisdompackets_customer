@@ -22,7 +22,15 @@ El LLM **solo clasifica**. Las acciones destructivas pasan por `action-guard.js`
 | Variable | Default | Efecto |
 |----------|---------|--------|
 | `STRIPE_AUTO_CANCEL_ENABLED` | `true` | `false` = nunca cancela en Stripe (modo auditoría) |
-| `AUTO_CANCEL_MIN_CONFIDENCE` | `0.88` | Confianza mínima de Gemini para auto-cancel |
+| `AUTO_CANCEL_MIN_CONFIDENCE` | `0.92` | Confianza mínima de Gemini para auto-cancel |
+
+## Cómo te enterás de un pedido de reembolso
+
+1. **Email a `ALERT_EMAIL_RECIPIENT`** con asunto `[REEMBOLSO] …` (al clasificar y al completar el respond).
+2. **Better Stack / Vercel Logs** — buscar `refund-alert` o escenarios `refund_*` en `[classification-decision]`.
+3. **Gmail** — label `WP/Desuscripción+Refund` (y `WP/Revisión-Humana` si quedó bloqueado).
+
+El robot **no** devuelve dinero en Stripe; solo cancela suscripción y avisa para que hagas el reembolso manual.
 
 ## Palabras que debe contener el mail (regex)
 
