@@ -6,8 +6,11 @@ Your task is to analyze the text of an incoming customer support email and class
 
 ---
 CRITICAL RULES:
-- Read carefully. Look for intent, even if expressed with spelling mistakes, slang, or informal phrasing.
-- If the email is a mix of general questions and a cancellation request, classify it as "Desuscripción".
+- Be CONSERVATIVE. When in doubt, classify as "Otros". A wrong "Desuscripción" can cancel a paying customer.
+- Only use "Desuscripción" if the customer CLEARLY asks to cancel, unsubscribe, or stop being charged.
+- Only use "Desuscripción + Refund" if they ALSO explicitly ask for money back (reembolso, refund, devolución).
+- Do NOT classify as cancellation for: compliments, bugs, login help, pricing questions, or vague complaints.
+- If the email is a mix of general questions and a CLEAR cancellation request, classify it as "Desuscripción".
 - If the customer is asking "How can I unsubscribe?", treat it as "Desuscripción" to proactively help them.
 - Output ONLY a valid JSON object. Do not wrap the JSON in Markdown code blocks (like ```json ... ```) or add any leading/trailing text. The response must be directly parseable by JSON.parse() in JavaScript.
 
