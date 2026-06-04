@@ -33,6 +33,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     config: {
       betterStack: betterStack.isEnabled(),
       blob: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      blobStoreId: process.env.BLOB_STORE_ID || null,
       imap: Boolean(process.env.IMAP_USER && process.env.IMAP_PASSWORD),
       gemini: Boolean(process.env.GEMINI_API_KEY),
       stripe: Boolean(process.env.STRIPE_SECRET_KEY),
