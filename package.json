@@ -1,7 +1,7 @@
 {
   "name": "wisdompackets-customer",
   "version": "1.0.0",
-  "description": "WisdomPackets customer support automation (Vercel Cron + IMAP + Stripe + Resend)",
+  "description": "WisdomPackets customer support automation (Vercel Cron + IMAP + Stripe + Gmail SMTP)",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "test-simulator": "node scripts/test_simulator.js",
     "typecheck": "tsc --noEmit",
     "betterstack-ping": "node scripts/betterstack-ping.js",
+    "test-email": "node scripts/test_email_send.js",
     "deploy": "vercel --prod"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "dotenv": "^16.4.5",
     "imapflow": "^1.0.156",
     "mailparser": "^3.7.1",
+    "nodemailer": "^8.0.7",
     "resend": "^4.0.0",
     "stripe": "^15.12.0"
   },

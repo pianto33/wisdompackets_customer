@@ -3,6 +3,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { isWithinNewMexicoBusinessHours } from '../lib/customer-support/classify.js';
 import { betterStack } from '../lib/customer-support/betterstack.js';
 import { getQueueStorageMode } from '../lib/customer-support/queue-store.js';
+import { getEmailProvider, isEmailConfigured } from '../lib/customer-support/mail-sender.js';
 
 enableBetterStackConsoleMirror();
 
@@ -37,6 +38,8 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
       imap: Boolean(process.env.IMAP_USER && process.env.IMAP_PASSWORD),
       gemini: Boolean(process.env.GEMINI_API_KEY),
       stripe: Boolean(process.env.STRIPE_SECRET_KEY),
+      email: isEmailConfigured(),
+      emailProvider: getEmailProvider(),
       resend: Boolean(process.env.RESEND_API_KEY),
       cronSecret: Boolean(process.env.CRON_SECRET),
     },
