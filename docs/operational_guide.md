@@ -20,14 +20,8 @@ Si utilizas Gmail o Google Workspace para tu cuenta de soporte (ej. `info@wisdom
 ### Envío saliente (Gmail SMTP, recomendado)
 
 1. La misma contraseña de aplicación sirve para SMTP (`SMTP_PASSWORD` o reutilizar `IMAP_PASSWORD`).
-2. Variables: `EMAIL_PROVIDER=gmail`, `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER=info@wisdompackets.com`.
-3. `RESEND_FROM_EMAIL=noreply@wisdompackets.com` — remitente visible en respuestas automáticas.
-4. Probar: `npm run test-email tu@email.com` y revisar **Enviados** en Gmail.
-
-### Resend (opcional, fallback)
-
-1. Verificá `wisdompackets.com` en [resend.com](https://resend.com).
-2. `EMAIL_PROVIDER=resend` + `RESEND_API_KEY`.
+2. Variables: `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER=pianto33.tp@gmail.com`, `MAIL_FROM_ADDRESS=info@wisdompackets.com`.
+3. Probar: `npm run test-email tu@email.com` y revisar **Enviados** en Gmail.
 
 ---
 
@@ -38,12 +32,14 @@ Todo el flujo corre en **wisdompackets_customer** (este repo) sin crontab local:
 | Cron | Ruta | Qué hace |
 |------|------|----------|
 | :00 | `/api/customer-support-classify` | Clasifica mails a info@ **sin** label `WP/Clasificado`, taguea en Gmail, encola en Blob |
-| :15 | `/api/customer-support-respond` | Cancela en Stripe, responde por Gmail SMTP (o Resend), actualiza labels |
+| :15 | `/api/customer-support-respond` | Cancela en Stripe, responde por Gmail SMTP, actualiza labels |
+
+> Solo este proyecto tiene crons de soporte. **wisdompackets-webhooks** no debe tenerlos activos.
 
 Documentación: [`CUSTOMER_SUPPORT_CRON.md`](CUSTOMER_SUPPORT_CRON.md)  
 Labels Gmail: [`GMAIL_LABELS.md`](GMAIL_LABELS.md)
 
-Variables en Vercel: `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `GEMINI_API_KEY`, `IMAP_*`, `EMAIL_PROVIDER`, `SMTP_*`, `STRIPE_SECRET_KEY`, `RESEND_FROM_EMAIL`. (`RESEND_API_KEY` solo si `EMAIL_PROVIDER=resend`.)
+Variables en Vercel: `CRON_SECRET`, `BLOB_READ_WRITE_TOKEN`, `GEMINI_API_KEY`, `IMAP_*`, `SMTP_*`, `STRIPE_SECRET_KEY`, `MAIL_FROM_ADDRESS`.
 
 Deploy: `vercel --prod` (desde la raíz de este repo)
 
