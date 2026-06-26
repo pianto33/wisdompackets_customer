@@ -1,4 +1,3 @@
-export function getEmailProvider(): 'gmail' | 'resend';
 export function isEmailConfigured(): boolean;
 export function normalizeMessageId(messageId: string | null | undefined): string | null;
 export function buildReplySubject(originalSubject: string | null | undefined): string;

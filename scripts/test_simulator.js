@@ -175,7 +175,7 @@ async function simulateResponder() {
       let html = fs.existsSync(templatePath) ? fs.readFileSync(templatePath, 'utf-8') : 'Template not found';
       html = html.replace('{{CUSTOMER_EMAIL}}', item.fromEmail);
 
-      console.log(` -> \x1b[32m[Resend]\x1b[0m Enviando correo automatico a ${item.fromEmail}...`);
+      console.log(` -> \x1b[32m[SMTP]\x1b[0m Enviando correo automatico a ${item.fromEmail}...`);
       console.log(`    Asunto: "Suscripción no encontrada - WisdomPackets"`);
       console.log(`    \x1b[90m(Simulación: El email informará que no se ubicó su cuenta)\x1b[0m`);
 
@@ -199,7 +199,7 @@ async function simulateResponder() {
           .replace(/\{\{EXPIRATION_DATE\}\}/g, periodEnd)
           .replace(/\{\{UNSUSCRIPTION_DATE\}\}/g, periodEnd);
 
-        console.log(` -> \x1b[32m[Resend]\x1b[0m Enviando confirmación de baja a ${item.fromEmail}...`);
+        console.log(` -> \x1b[32m[SMTP]\x1b[0m Enviando confirmación de baja a ${item.fromEmail}...`);
         console.log(`    Asunto: "Confirmación de cancelación de membresía - WisdomPackets"`);
         console.log(`    Fecha Cancelación: "${periodEnd}"`);
 
@@ -215,7 +215,7 @@ async function simulateResponder() {
           .replace(/\{\{EXPIRATION_DATE\}\}/g, periodEnd)
           .replace(/\{\{UNSUSCRIPTION_DATE\}\}/g, periodEnd);
 
-        console.log(` -> \x1b[32m[Resend]\x1b[0m Enviando confirmación de reembolso a ${item.fromEmail}...`);
+        console.log(` -> \x1b[32m[SMTP]\x1b[0m Enviando confirmación de reembolso a ${item.fromEmail}...`);
         console.log(`    Asunto: "Cancelación de membresía y reembolso iniciado - WisdomPackets"`);
         console.log(`    Enlace de Reembolso: ${mockReceipt}`);
       }

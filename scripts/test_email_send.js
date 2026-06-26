@@ -1,5 +1,5 @@
 /**
- * Prueba de envío saliente (Gmail SMTP o Resend según EMAIL_PROVIDER).
+ * Prueba de envío saliente vía Gmail SMTP.
  * Uso:
  *   node scripts/test_email_send.js [destino@email.com]
  *   node scripts/test_email_send.js [destino] [message-id-del-mail-original]
@@ -9,7 +9,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import {
   buildReplySubject,
-  getEmailProvider,
   isEmailConfigured,
   sendSupportEmail,
 } from '../lib/customer-support/mail-sender.js';
@@ -22,11 +21,11 @@ const inReplyTo = process.argv[3] || process.env.TEST_IN_REPLY_TO || null;
 const originalSubject = process.env.TEST_ORIGINAL_SUBJECT || 'Consulta soporte WisdomPackets';
 
 if (!isEmailConfigured()) {
-  console.error('Email no configurado. Revisá IMAP_PASSWORD / SMTP_* o RESEND_API_KEY en .env');
+  console.error('Email no configurado. Revisá SMTP_USER/SMTP_PASSWORD o IMAP_USER/IMAP_PASSWORD en .env');
   process.exit(1);
 }
 
-console.log(`Provider: ${getEmailProvider()}`);
+console.log('Provider: gmail');
 console.log(`Enviando test a ${to}...`);
 if (inReplyTo) console.log(`Threading In-Reply-To: ${inReplyTo}`);
 
