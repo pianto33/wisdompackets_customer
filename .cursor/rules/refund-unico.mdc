@@ -1,0 +1,40 @@
+---
+description: Reembolso Stripe — último pago; escalar si >30 días o cargo no último
+alwaysApply: true
+---
+
+# Política de reembolsos (Stripe)
+
+## Auto-refund permitido solo si
+
+1. Es el **último pago** (`succeeded`, sin reembolsar, mayor `created`).
+2. Tiene **≤ 30 días** de antigüedad.
+3. **Un solo** cargo por cliente.
+
+## Escalar al operador (NO reembolsar automáticamente)
+
+- El mail pide un cargo que **no es el último** (otra fecha, importe de un cobro viejo, “el de mayo”, etc.).
+- El último cargo (o el pedido) tiene **más de 30 días**.
+- Hay varios cargos sin reembolsar y el cliente no aclara cuál — asumir último; si no aplica por antigüedad, preguntar.
+
+En esos casos: avisar al operador, dejar en `Revisión-Humana`, **no** llamar `stripe.refunds.create` hasta confirmación.
+
+## Overrides (solo tras OK explícito del operador en el chat)
+
+En `stripe-refund.js`:
+
+| Flag | Cuándo |
+|------|--------|
+| `operatorApprovedNonLatest` | Operador confirmó reembolsar un cargo que no es el último |
+| `operatorApprovedStale` | Operador confirmó reembolsar cargo con >30 días |
+
+## Implementación
+
+- `assessAutoRefund()` — ¿se puede auto-refundear el último pago?
+- `createCustomerRefunds()` — valida política antes de Stripe
+- `REFUND_MAX_CHARGE_AGE_DAYS = 30`
+
+## Incorrecto
+
+- Reembolsar todos los cargos o uno viejo sin confirmación.
+- Auto-refund con cargo de 45 días porque el cliente lo pidió en el mail.

@@ -14,8 +14,22 @@ El LLM **solo clasifica**. Las acciones destructivas pasan por `action-guard.js`
 
 ## Reembolsos de dinero
 
-**El robot no ejecuta `stripe.refunds.create`.**  
+**El cron no ejecuta `stripe.refunds.create`.**  
 `Desuscripción + Refund` solo cancela la suscripción y envía un mail con enlace al recibo; el reembolso lo hacés vos en Stripe si corresponde.
+
+### Política: siempre el último pago (≤ 30 días)
+
+Auto-refund **solo** si:
+
+- Es el **último** cargo `succeeded` sin reembolsar.
+- Tiene **≤ 30 días** (`REFUND_MAX_CHARGE_AGE_DAYS`).
+
+**Escalar al operador** (no `stripe.refunds.create` automático) si:
+
+- El mail pide un cargo que **no es el último**.
+- El cargo tiene **más de 30 días**.
+
+Overrides tras OK explícito en chat: `operatorApprovedNonLatest`, `operatorApprovedStale` en `stripe-refund.js`. Ver `.cursor/rules/refund-unico.mdc`.
 
 ## Variables de entorno
 
