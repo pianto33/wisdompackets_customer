@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit",
     "betterstack-ping": "node scripts/betterstack-ping.js",
     "test-email": "node scripts/test_email_send.js",
+    "dedupe-subs": "node scripts/dedupe_duplicate_subscriptions.js",
+    "dedupe-subs:dry-run": "node scripts/dedupe_duplicate_subscriptions.js --dry-run",
     "deploy": "vercel --prod"
   },
   "dependencies": {

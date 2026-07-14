@@ -7,12 +7,23 @@
  * 2. Mejor estado: active > trialing > past_due
  * 3. Empate → la más antigua
  *
- * Uso:
- *   STRIPE_SECRET_KEY=sk_live_... node scripts/dedupe_duplicate_subscriptions.js
- *   STRIPE_SECRET_KEY=sk_live_... node scripts/dedupe_duplicate_subscriptions.js --dry-run
+ * Uso (desde wisdompackets_customer/):
+ *   npm run dedupe-subs:dry-run
+ *   npm run dedupe-subs
+ *
+ * Carga STRIPE_PRIVATE_KEY desde .env local o wisdompackets_landing/.env.prod
  */
-import "dotenv/config";
+import dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import Stripe from "stripe";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, "../..");
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: path.resolve(repoRoot, "wisdompackets_landing/.env.prod") });
+dotenv.config({ path: path.resolve(repoRoot, "wisdompackets_landing/.env") });
 
 const BILLABLE = new Set(["active", "trialing", "past_due"]);
 const dryRun = process.argv.includes("--dry-run");
@@ -35,9 +46,19 @@ function keepScore(sub) {
 
 async function listAllSubscriptions(status) {
   const subs = [];
-  for await (const sub of stripe.subscriptions.list({ status, limit: 100 }).autoPagingIter()) {
-    subs.push(sub);
+  let startingAfter;
+
+  for (;;) {
+    const page = await stripe.subscriptions.list({
+      status,
+      limit: 100,
+      ...(startingAfter ? { starting_after: startingAfter } : {}),
+    });
+    subs.push(...page.data);
+    if (!page.has_more || page.data.length === 0) break;
+    startingAfter = page.data[page.data.length - 1].id;
   }
+
   return subs;
 }
 
@@ -79,8 +100,8 @@ async function main() {
       console.log(`  cancelar ${sub.id} (${sub.status})`);
       if (!dryRun) {
         await stripe.subscriptions.cancel(sub.id);
-        canceled++;
       }
+      canceled++;
     }
   }
 
