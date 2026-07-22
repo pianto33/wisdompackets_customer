@@ -1,0 +1,14 @@
+---
+description: Stripe Not-Found — buscar pistas, template not-found una sola vez, escalar en follow-up
+alwaysApply: true
+---
+
+# Stripe Not-Found — flujo obligatorio
+
+Fuente canónica: `summaryvox/voxpages_customer/.cursor/rules/stripe-not-found-soporte.mdc`
+
+## Resumen
+
+1. Buscar en Stripe por email (+ pistas del mail: importe, fecha, last4, titular).
+2. Sin match → enviar `suscription-not-found` **una sola vez**; label `WP/Respondido-SinCuenta` o `SV/Respondido-SinCuenta`.
+3. Si el cliente **ya recibió not-found y respondió**, y Stripe sigue sin match → **avisar al operador**; **no** reenviar el template (evitar bucle).
