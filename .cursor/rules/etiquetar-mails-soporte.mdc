@@ -1,0 +1,17 @@
+---
+description: Tras cualquier respuesta o acción de soporte, etiquetar el mail en Gmail con IMAP UID correcto
+alwaysApply: true
+---
+
+# Etiquetar mails de soporte (obligatorio)
+
+Fuente canónica (misma bandeja IMAP):  
+`summaryvox/voxpages_customer/.cursor/rules/etiquetar-mails-soporte.mdc`  
+y doc `summaryvox/voxpages_customer/docs/customer_support/ETIQUETADO_GMAIL.md`.
+
+## Resumen
+
+1. Tras **responder / cancelar / reembolsar / cerrar**: label en el inbound → `WP/Respondido-Manual` (humano) o Auto/SinCuenta (bot).
+2. ImapFlow + Gmail: **siempre** `{ uid: true }` en `search`, `download`, `fetchOne`, `messageFlagsAdd/Remove`.
+3. Sin `{ uid: true }`, search devuelve seq# y el label cae en **otro mail**.
+4. Verificar `envelope.from` = cliente antes de etiquetar.

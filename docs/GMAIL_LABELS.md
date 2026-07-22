@@ -24,10 +24,17 @@ to:info@wisdompackets.com -label:"WP/Clasificado"
 | `WP/Pendiente-Respuesta` | Clasificador | En cola para el cron respond (:15) |
 | `WP/Respondido-Auto` | Respond | Cancelación + email automático OK |
 | `WP/Respondido-SinCuenta` | Respond | Email “no encontramos suscripción” |
+| `WP/Respondido-Manual` | Humano / agente | Respuesta manual — **obligatorio** tras resolver en chat |
 | `WP/Error` | Respond | Falló Stripe/Resend; revisar alerta |
 | `WP/Archivado` | Clasificador | Mail procesado desde INBOX (opcional) |
 
 La carpeta **WisdomPackets Support** ya no se usa por IMAP (fallaba en serverless); la organización es solo con labels `WP/*`.
+
+## IMAP UID (crítico)
+
+Al etiquetar con ImapFlow: usar siempre `{ uid: true }` en `search` / `download` / `messageFlags*`. Sin eso Gmail devuelve seq# y el label va a otro mail.
+
+Detalle: `voxpages_customer/docs/customer_support/ETIQUETADO_GMAIL.md`.
 
 ## Estados en cola JSON (Blob)
 
