@@ -1,0 +1,18 @@
+---
+description: Soporte unificado — incluir VoxPages, WisdomPackets y Gistly
+alwaysApply: true
+---
+
+# Tres productos de soporte
+
+Fuente canónica: `summaryvox/voxpages_customer/.cursor/rules/tres-productos-soporte.mdc`
+
+## WisdomPackets (este repo)
+
+- Entrante: `info@wisdompackets.com`
+- Labels: **`WP/`** (`WP/Clasificado`, `WP/Respondido-*`, etc.)
+- Templates: `wisdompackets_customer/lib/customer-support/templates/` (marca WisdomPackets)
+- From: `noreply@wisdompackets.com` · Stripe: `.env` de **este repo**
+- Cron/health: `https://wisdompackets-customer.vercel.app/api/health`
+
+Auditorías y “mails nuevos”: **siempre** incluir también VoxPages (`SV/`) y Gistly (`GL/`).
