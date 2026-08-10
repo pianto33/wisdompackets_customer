@@ -1,0 +1,14 @@
+---
+description: Cola Blob debe reflejar Gmail; reconciliar tras cierres manuales
+alwaysApply: true
+---
+
+# Cola Blob ↔ Gmail
+
+Fuente canónica: `summaryvox/voxpages_customer/.cursor/rules/cola-soporte-reconciliar.mdc`
+
+## Resumen
+
+- **IMAP/Gmail** (`Respondido-*`) gana sobre la cola Blob si hay desincronización.
+- Tras auditar inbox o cerrar casos manualmente → `node scripts/reconcile_queue_labels.js` en **voxpages_customer** (cola compartida en Blob).
+- No reportar “pendientes en cola” sin reconciliar primero.

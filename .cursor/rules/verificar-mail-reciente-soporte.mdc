@@ -1,0 +1,14 @@
+---
+description: Antes de enviar mail al cliente, verificar que no le escribimos en los últimos 60 minutos
+alwaysApply: true
+---
+
+# Anti-duplicados — mail reciente (60 min)
+
+Fuente canónica: `summaryvox/voxpages_customer/.cursor/rules/verificar-mail-reciente-soporte.mdc`
+
+## Resumen
+
+- **Antes de enviar** (Cursor / Claude / ChatGPT / scripts): comprobar IMAP `[Gmail]/Sent Mail` que no haya outbound a ese cliente en los **últimos 60 min**.
+- Batch: **un mail por cliente/caso**; varios UIDs del mismo `from` → solo etiquetar extras.
+- Si ya enviamos hace poco → **no reenviar**; solo labels + avisar al operador.
