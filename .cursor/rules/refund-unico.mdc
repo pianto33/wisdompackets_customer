@@ -1,5 +1,5 @@
 ---
-description: Reembolso Stripe — solo último pago; avisar si hay varios; OK explícito para anteriores
+description: Reembolso Stripe — solo último pago; auto-refund bot con doble tope 24h
 alwaysApply: true
 ---
 
@@ -12,3 +12,4 @@ Fuente canónica: `summaryvox/voxpages_customer/.cursor/rules/refund-unico.mdc`
 - **Solo el último pago** salvo OK explícito del operador en el chat para cargos anteriores o múltiples.
 - Si hay **más de un cargo reembolsable** → **avisar al operador** con listado; no reembolsar varios sin autorización.
 - >30 días o cargo no último → escalar; flags `operatorApproved*` / `explicitChargeIds` solo con OK humano.
+- **Cron auto-refund** OK con política + doble tope 24h: máx **5** `metadata.source=auto_support_bot` **o** máx **12** totales (lo que se alcance primero). Al tope: cancel + template + alerta, sin `refunds.create`.

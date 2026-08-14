@@ -1,6 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { isWithinNewMexicoBusinessHours } from './classify.js';
 
+/** Respond cron: 11:00–22:59 UTC (11am–11pm). */
+export const RESPOND_UTC_WINDOW = { startHour: 11, endHourExclusive: 23 };
+
 export function authorizeCron(req: VercelRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
   if (!cronSecret) return true;
@@ -11,6 +14,16 @@ export function authorizeCron(req: VercelRequest): boolean {
 export function respondUnauthorized(res: VercelResponse) {
   console.warn('[customer-support-cron] unauthorized — revisá CRON_SECRET en Vercel');
   return res.status(401).json({ ok: false, reason: 'unauthorized' });
+}
+
+export function getUtcHour(now = new Date()): number {
+  return now.getUTCHours();
+}
+
+/** True during 11:00–22:59 UTC inclusive of the 22h slot (until 23:00). */
+export function isWithinRespondUtcHours(now = new Date()): boolean {
+  const hour = getUtcHour(now);
+  return hour >= RESPOND_UTC_WINDOW.startHour && hour < RESPOND_UTC_WINDOW.endHourExclusive;
 }
 
 export function respondOutsideBusinessHours(res: VercelResponse) {
@@ -36,9 +49,36 @@ export function respondOutsideBusinessHours(res: VercelResponse) {
   });
 }
 
+export function respondOutsideRespondUtcHours(res: VercelResponse) {
+  const utcHour = getUtcHour();
+  console.log('[customer-support-cron] outside respond UTC window — no respond', {
+    timezone: 'UTC',
+    window: '11:00-23:00',
+    utcHour,
+  });
+  return res.status(200).json({
+    ok: true,
+    skipped: true,
+    reason: 'outside_respond_utc_hours',
+    timezone: 'UTC',
+    window: '11:00-23:00',
+    utcHour,
+  });
+}
+
+/** Classify: 09:00–21:00 America/Denver. */
 export function checkBusinessHours(res: VercelResponse): boolean {
   if (!isWithinNewMexicoBusinessHours()) {
     respondOutsideBusinessHours(res);
+    return false;
+  }
+  return true;
+}
+
+/** Respond: 11:00–23:00 UTC. */
+export function checkRespondHours(res: VercelResponse): boolean {
+  if (!isWithinRespondUtcHours()) {
+    respondOutsideRespondUtcHours(res);
     return false;
   }
   return true;

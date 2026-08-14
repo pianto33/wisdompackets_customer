@@ -2,7 +2,7 @@ import { enableBetterStackConsoleMirror } from '../lib/customer-support/betterst
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import {
   authorizeCron,
-  checkBusinessHours,
+  checkRespondHours,
   respondUnauthorized,
 } from '../lib/customer-support/cron-auth.js';
 import { logCronInvocation } from '../lib/customer-support/cron-runtime.js';
@@ -15,7 +15,8 @@ export const config = {
 };
 
 /**
- * Vercel Cron: process PENDING_ACTION queue (Stripe + Resend + Gmail labels).
+ * Vercel Cron: process PENDING_ACTION queue (Stripe + email + Gmail labels).
+ * Window: 11:00–23:00 UTC.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   logCronInvocation('respond', req);
@@ -24,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return respondUnauthorized(res);
   }
 
-  if (!checkBusinessHours(res)) {
+  if (!checkRespondHours(res)) {
     return;
   }
 
