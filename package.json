@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "WisdomPackets customer support automation (Vercel Cron + IMAP + Stripe + Gmail SMTP)",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "type": "module",
   "scripts": {
     "classify": "node scripts/classify_emails.js",
@@ -26,7 +29,7 @@
     "stripe": "^15.12.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^24.0.0",
     "typescript": "^5.0.0",
     "vercel": "^33.0.0"
   }
