@@ -36,7 +36,7 @@ Overrides tras OK explícito en chat: `operatorApprovedNonLatest`, `operatorAppr
 | Variable | Default | Efecto |
 |----------|---------|--------|
 | `STRIPE_AUTO_CANCEL_ENABLED` | `true` | `false` = nunca cancela en Stripe (modo auditoría) |
-| `AUTO_CANCEL_MIN_CONFIDENCE` | `0.92` | Confianza mínima de Gemini para auto-cancel |
+| `AUTO_CANCEL_MIN_CONFIDENCE` | `0.90` | Confianza mínima de Gemini para auto-cancel |
 
 ## Cómo te enterás de un pedido de reembolso
 

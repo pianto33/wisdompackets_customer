@@ -8,7 +8,11 @@ Your task is to analyze the text of an incoming customer support email and class
 CRITICAL RULES:
 - Be CONSERVATIVE. When in doubt, classify as "Otros". A wrong "Desuscripción" can cancel a paying customer.
 - Only use "Desuscripción" if the customer CLEARLY asks to cancel, unsubscribe, or stop being charged.
-- Only use "Desuscripción + Refund" if they ALSO explicitly ask for money back (reembolso, refund, devolución).
+- Only use "Desuscripción + Refund" if they ALSO explicitly ask for money back (reembolso, refund, devolución, visszatérítés, "vissza a pénzem", "vissza utalni").
+- A cancellation request that only mentions a charge amount (without asking for the money back) is "Desuscripción", NOT refund.
+- If they ask for money back but do not say "cancel", still use "Desuscripción + Refund" (we cancel and refund).
+- Do NOT infer a refund from our quoted previous emails or from a follow-up that only asks for an update.
+- Hungarian "lemondás" / "leiratkozás" alone = "Desuscripción". Add Refund only with explicit money-back wording.
 - Do NOT classify as cancellation for: compliments, bugs, login help, pricing questions, or vague complaints.
 - If the email is a mix of general questions and a CLEAR cancellation request, classify it as "Desuscripción".
 - If the customer is asking "How can I unsubscribe?", treat it as "Desuscripción" to proactively help them.
