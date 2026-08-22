@@ -1,8 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { isWithinNewMexicoBusinessHours } from './classify.js';
 
-/** Respond cron: 11:00–22:59 UTC (11am–11pm). */
-export const RESPOND_UTC_WINDOW = { startHour: 11, endHourExclusive: 23 };
+/** Classify + respond: 10:00–23:59 UTC, todos los días (incluye sáb/dom). */
+export const CRON_UTC_WINDOW = { startHour: 10, endHourInclusive: 23 };
+/** @deprecated misma ventana que CRON_UTC_WINDOW */
+export const RESPOND_UTC_WINDOW = CRON_UTC_WINDOW;
 
 export function authorizeCron(req: VercelRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
@@ -20,53 +22,38 @@ export function getUtcHour(now = new Date()): number {
   return now.getUTCHours();
 }
 
-/** True during 11:00–22:59 UTC inclusive of the 22h slot (until 23:00). */
-export function isWithinRespondUtcHours(now = new Date()): boolean {
+export function isWithinCronUtcHours(now = new Date()): boolean {
   const hour = getUtcHour(now);
-  return hour >= RESPOND_UTC_WINDOW.startHour && hour < RESPOND_UTC_WINDOW.endHourExclusive;
+  return hour >= CRON_UTC_WINDOW.startHour && hour <= CRON_UTC_WINDOW.endHourInclusive;
+}
+
+/** @deprecated alias de isWithinCronUtcHours */
+export function isWithinRespondUtcHours(now = new Date()): boolean {
+  return isWithinCronUtcHours(now);
 }
 
 export function respondOutsideBusinessHours(res: VercelResponse) {
-  const denverHour = Number(
-    new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/Denver',
-      hour: 'numeric',
-      hour12: false,
-    }).format(new Date())
-  );
-  console.log('[customer-support-cron] outside business hours — no IMAP/respond', {
-    timezone: 'America/Denver',
-    window: '09:00-21:00',
-    denverHour,
+  const utcHour = getUtcHour();
+  console.log('[customer-support-cron] outside cron UTC window — no IMAP/respond', {
+    timezone: 'UTC',
+    window: '10:00-23:59',
+    utcHour,
   });
   return res.status(200).json({
     ok: true,
     skipped: true,
     reason: 'outside_business_hours',
-    timezone: 'America/Denver',
-    window: '09:00-21:00',
-    denverHour,
+    timezone: 'UTC',
+    window: '10:00-23:59',
+    utcHour,
   });
 }
 
 export function respondOutsideRespondUtcHours(res: VercelResponse) {
-  const utcHour = getUtcHour();
-  console.log('[customer-support-cron] outside respond UTC window — no respond', {
-    timezone: 'UTC',
-    window: '11:00-23:00',
-    utcHour,
-  });
-  return res.status(200).json({
-    ok: true,
-    skipped: true,
-    reason: 'outside_respond_utc_hours',
-    timezone: 'UTC',
-    window: '11:00-23:00',
-    utcHour,
-  });
+  return respondOutsideBusinessHours(res);
 }
 
-/** Classify: 09:00–21:00 America/Denver. */
+/** Classify y respond: 10:00–23:59 UTC todos los días. */
 export function checkBusinessHours(res: VercelResponse): boolean {
   if (!isWithinNewMexicoBusinessHours()) {
     respondOutsideBusinessHours(res);
@@ -75,11 +62,6 @@ export function checkBusinessHours(res: VercelResponse): boolean {
   return true;
 }
 
-/** Respond: 11:00–23:00 UTC. */
 export function checkRespondHours(res: VercelResponse): boolean {
-  if (!isWithinRespondUtcHours()) {
-    respondOutsideRespondUtcHours(res);
-    return false;
-  }
-  return true;
+  return checkBusinessHours(res);
 }

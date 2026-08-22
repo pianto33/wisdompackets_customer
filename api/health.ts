@@ -12,13 +12,7 @@ enableBetterStackConsoleMirror();
  * GET https://wisdompackets-customer.vercel.app/api/health
  */
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
-  const denverHour = Number(
-    new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/Denver',
-      hour: 'numeric',
-      hour12: false,
-    }).format(new Date())
-  );
+  const utcHour = new Date().getUTCHours();
 
   const queueStorage = getQueueStorageMode();
   const configOk = queueStorage === 'vercel-blob' || queueStorage === 'local-filesystem';
@@ -28,7 +22,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     app: 'wisdompackets-customer',
     timestamp: new Date().toISOString(),
     vercelEnv: process.env.VERCEL_ENV || null,
-    denverHour,
+    utcHour,
     inBusinessHours: isWithinNewMexicoBusinessHours(),
     queueStorage,
     config: {

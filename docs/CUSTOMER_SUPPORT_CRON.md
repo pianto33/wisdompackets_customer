@@ -6,10 +6,10 @@ Automatización completa en **`wisdompackets_customer`**. Los crons **solo** cor
 
 | Endpoint | Schedule (UTC) | Función |
 |----------|----------------|---------|
-| `/api/customer-support-classify` | `0 * * * *` | IMAP → Gemini → Stripe → Gmail labels → cola Blob |
-| `/api/customer-support-respond` | `15 * * * *` | Cola `PENDING_ACTION` → Stripe cancel → Gmail SMTP → labels |
+| `/api/customer-support-classify` | `0 10-23 * * *` | IMAP → Gemini → Stripe → Gmail labels → cola Blob |
+| `/api/customer-support-respond` | `15 10-23 * * *` | Cola `PENDING_ACTION` → Stripe cancel → Gmail SMTP → labels |
 
-Ambos solo ejecutan entre **09:00–20:59** (`America/Denver`).
+Ambos se disparan cada hora, **todos los días (incluye sáb/dom)**, de **10:00 a 23:59 UTC**.
 
 > **No** activar los mismos crons en `wisdompackets-webhooks`. Ese repo tenía rutas legacy `/api/cron/customer-support-*` que ya no están en su `vercel.json`.
 
