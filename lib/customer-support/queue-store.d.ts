@@ -5,4 +5,5 @@ export function getQueueStorageMode():
 
 export function getQueue(): Promise<unknown[]>;
 export function saveQueue(queue: unknown[]): Promise<void>;
+export function upsertQueueItems(items: unknown[]): Promise<void>;
 export function logRun(details: Record<string, unknown>): Promise<void>;
