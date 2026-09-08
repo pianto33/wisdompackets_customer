@@ -7,7 +7,7 @@ El LLM **solo clasifica**. Las acciones destructivas pasan por `action-guard.js`
 | Capa | Qué hace |
 |------|----------|
 | 1. Prompt conservador | Gemini duda → `Otros` |
-| 2. `evaluateAutomatedAction` | Tras clasificar: confianza mínima + palabras clave en el mail |
+| 2. `evaluateAutomatedAction` | Tras clasificar: confianza mínima (≥0.90); keywords opcionales si Gemini ya clasificó actionable |
 | 3. Cola `NEEDS_HUMAN_REVIEW` | Si falla el guard, no entra a `PENDING_ACTION` |
 | 4. `assertStripeCancelAllowed` | El respondedor vuelve a validar antes de `stripe.subscriptions.cancel` |
 | 5. Alerta email | Si el respondedor bloquea, avisa a `ALERT_EMAIL_RECIPIENT` |
