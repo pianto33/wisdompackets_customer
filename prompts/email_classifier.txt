@@ -19,7 +19,7 @@ JSON OUTPUT SCHEMA:
 {
   "classification": "Desuscripción" | "Desuscripción + Refund" | "Otros",
   "confidence": 0.0 to 1.0,
-  "language": "es" | "hu" | "en",
+  "language": "es" | "hu" | "cs" | "en",
   "reasoning": "A brief 1-sentence explanation in Spanish of why you chose this classification."
 }
 
@@ -27,6 +27,7 @@ CRITICAL LANGUAGE RULE:
 - Detect the language of the incoming customer email.
 - Set "language" to "es" if the customer wrote in Spanish.
 - Set "language" to "hu" if the customer wrote in Hungarian.
+- Set "language" to "cs" if the customer wrote in Czech.
 - Set "language" to "en" if the customer wrote in English.
 - For any other language, or if you are not sure, set "language" to "en" (English is the fallback for all automated replies).
 
