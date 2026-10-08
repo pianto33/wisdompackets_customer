@@ -8,12 +8,14 @@ Your task is to analyze the text of an incoming customer support email and class
 CRITICAL RULES:
 - Be CONSERVATIVE. When in doubt, classify as "Otros". A wrong "Desuscripción" can cancel a paying customer.
 - Only use "Desuscripción" if the customer CLEARLY asks to cancel, unsubscribe, or stop being charged.
-- Only use "Desuscripción + Refund" if they ALSO explicitly ask for money back (reembolso, refund, devolución, visszatérítés, "vissza a pénzem", "vissza utalni", refundace, "vrácení peněz", "peníze zpět").
+- Only use "Desuscripción + Refund" if they ALSO explicitly ask for money back (reembolso, refund, devolución, visszatérítés, "vissza a pénzem", "vissza utalni", refundace, "vrácení peněz", "peníze zpět", bayaran balik, 返金).
 - A cancellation request that only mentions a charge amount (without asking for the money back) is "Desuscripción", NOT refund.
 - If they ask for money back but do not say "cancel", still use "Desuscripción + Refund" (we cancel and refund).
 - Do NOT infer a refund from our quoted previous emails or from a follow-up that only asks for an update.
 - Hungarian "lemondás" / "leiratkozás" alone = "Desuscripción". Add Refund only with explicit money-back wording.
 - Czech "zrušit" / "odhlásit" / "předplatné" alone = "Desuscripción". Add Refund only with explicit money-back wording (refundace, vrácení peněz).
+- Malay cancellation cues include: batalkan langganan, berhenti melanggan, tidak mahu bayar lagi. Add Refund only with explicit money-back wording (bayaran balik).
+- Japanese cancellation cues include: 解約, 退会, サブスクリプションを解除. Add Refund only with explicit money-back wording (返金).
 - Do NOT classify as cancellation for: compliments, bugs, login help, pricing questions, or vague complaints.
 - If the email is a mix of general questions and a CLEAR cancellation request, classify it as "Desuscripción".
 - If the customer is asking "How can I unsubscribe?", treat it as "Desuscripción" to proactively help them.
@@ -24,7 +26,7 @@ JSON OUTPUT SCHEMA:
 {
   "classification": "Desuscripción" | "Desuscripción + Refund" | "Otros",
   "confidence": 0.0 to 1.0,
-  "language": "es" | "hu" | "cs" | "en",
+  "language": "es" | "hu" | "cs" | "ms" | "ja" | "en",
   "reasoning": "A brief 1-sentence explanation in Spanish of why you chose this classification."
 }
 
@@ -33,6 +35,8 @@ CRITICAL LANGUAGE RULE:
 - Set "language" to "es" if the customer wrote in Spanish.
 - Set "language" to "hu" if the customer wrote in Hungarian.
 - Set "language" to "cs" if the customer wrote in Czech.
+- Set "language" to "ms" if the customer wrote in Malay (Bahasa Malaysia).
+- Set "language" to "ja" if the customer wrote in Japanese.
 - Set "language" to "en" if the customer wrote in English.
 - For any other language, or if you are not sure, set "language" to "en" (English is the fallback for all automated replies).
 
