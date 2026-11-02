@@ -1,0 +1,10 @@
+---
+description: Descartar propuestas comerciales en soporte sin responder
+alwaysApply: true
+---
+
+# Propuestas comerciales — descartar
+
+Fuente canónica: `summaryvox/voxpages_customer/.cursor/rules/descartar-propuesta-comercial.mdc`
+
+Partnership, SEO, guest post, licensing o propuesta comercial sin pedido de baja/refund: no responder, label `WP/Respondido-Auto`, cola `PROCESSED_NO_ACTION`.
